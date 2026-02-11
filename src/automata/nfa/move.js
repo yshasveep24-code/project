@@ -12,6 +12,8 @@
 export function move(states, symbol) {
     const result = new Set();
 
+    if (!states) return result;
+
     // Normalize iterator
     const iterator = (states instanceof Set) ? states : states;
 

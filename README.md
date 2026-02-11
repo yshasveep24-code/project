@@ -1,36 +1,69 @@
-# Automata Visualizer - Regex to DFA Converter
+# Automata Visualizer ⚡
 
-A beautiful, interactive web application that visualizes the conversion of Regular Expressions to Deterministic Finite Automata (DFA).
+A sophisticated, interactive web application that visualizes the conversion of Regular Expressions to Deterministic Finite Automata (DFA). Designed with a distinctive **Technical Laboratory Aesthetic**.
 
-## Features
+![Status](https://img.shields.io/badge/Status-Stable-success) ![License](https://img.shields.io/badge/License-ISC-blue)
 
-- **Step-by-Step Visualization**: Watch the transformation from Regex → ε-NFA → NFA → DFA.
-- **Interactive Graph**: Zoom, pan, and drag nodes to explore the automata.
-- **Technical Aesthetic**: Designed with a "Technical Laboratory" theme using neon colors, crt effects, and monospace typography.
-- **Testing Tools**: Test individual strings or run batch tests to verify your automata.
-- **Export Options**: Export diagrams as SVG, PNG, or JSON.
+## 🎨 Technical Laboratory Aesthetic
 
-## Usage
+The user interface has been crafted to resemble high-end laboratory equipment, featuring:
+- **Oscilloscope-style Grids**: Deep navy background with subtle teal grid overlays.
+- **CRT Effects**: Micro-scanlines and glowing text for a retro-futuristic feel.
+- **Neon Color Palette**: 
+  - Primary: **Amber (#FF9500)** for active elements.
+  - Secondary: **Teal (#00E5CC)** for data flow and borders.
+- **Precision Typography**: Uses *Syne*, *Azeret Mono*, and *Share Tech Mono* for a technical look.
 
-1. **Clone the repository**
-2. **Open `index.html`** in your modern web browser.
-   - No build step required for the core functionality (vanilla JS/ES6 modules).
-   - Recommended: Use a local server (e.g., Live Server in VS Code) to avoid CORS issues with modules.
+## 🚀 Features
 
-## Project Structure
+- **Pipeline Visualization**: Watch the transformation step-by-step:
+  1.  **Regex Parsing**: Tokenization and Postfix conversion.
+  2.  **ε-NFA Construction**: Thompson's Construction algorithm.
+  3.  **NFA Simplification**: Epsilon removal.
+  4.  **DFA Generation**: Subset construction (Power Set algorithm).
+- **Interactive Graphing**: 
+  - Pan, zoom, and drag nodes.
+  - Auto-layout for clear readability.
+  - **Dead State (Φ)** visualization for strict DFAs.
+- **Testing Suite**:
+  - **String Tester**: Instant accept/reject feedback for inputs.
+  - **Batch Testing**: Run multiple test cases at once.
+- **Export Capabilities**: Save your diagrams as SVG, PNG, or JSON.
 
-- `src/app`: Application logic and state management.
-- `src/automata`: Core algorithms for NFA/DFA construction.
-- `src/parser`: Regex parsing and AST generation.
-- `src/visualization`: D3.js based graph rendering.
-- `src/ui`: UI components and interactions.
+## 🧪 Verification & Testing
 
-## Technologies
+Validated with complex regex patterns to ensure algorithmic correctness.
 
-- **HTML5/CSS3**: Custom properties, CSS Grid/Flexbox.
-- **JavaScript (ES6+)**: Modular architecture.
-- **D3.js**: For graph visualization.
+### Recommended Test Patterns
 
-## License
+| Regex | Description | Behavior |
+| :--- | :--- | :--- |
+| `0*|(1+0)*` | **Dead State Check** | Verifies the trap state (Φ) with self-loops. |
+| `ab` | **Concatenation** | Linear state progression. |
+| `a|b` | **Union** | Branching paths. |
+| `a*` | **Kleene Star** | Self-looping accepting state. |
+| `(ab)+` | **Groups & Loops** | Handles repeating sequences. |
 
-ISC
+## 🛠️ Usage
+
+This is a **client-side only** application (Vanilla JS + ES6 Modules).
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/yourusername/automata-visualizer.git
+    ```
+2.  **Run the application**:
+    - Simply open `index.html` in a modern browser (Chrome/Edge recommended).
+    - *Note*: For best experience with ES6 modules, use a local server (e.g., Live Server extension in VS Code).
+
+## 📂 Project Structure
+
+- `src/app`: Core application bootstrap and state.
+- `src/automata`: Algorithms (NFA, DFA, Epsilon Closure).
+- `src/parser`: Tokenizer and AST generators.
+- `src/visualization`: D3.js rendering logic.
+- `src/ui`: Component-based UI logic.
+
+## 📝 License
+
+ISC License. Free for educational and personal use.

@@ -40,6 +40,9 @@ export function renameStates(dfa) {
     // Resize ID counter or just relabel?
     // Requirement says "State naming".
     orderedStates.forEach((s, index) => {
-        s.label = `q${index}`;
+        // Preserve dead state label (Φ)
+        if (!s.isDead && s.label !== 'Φ') {
+            s.label = `q${index}`;
+        }
     });
 }

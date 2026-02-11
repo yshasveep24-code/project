@@ -78,7 +78,8 @@ export function toDFA(nfa) {
                     nextDfaState.isDead = true; // Mark given for styling
                     statesMap.set(nextKey, nextDfaState);
                     dfa.addState(nextDfaState);
-                    // Optimization: Don't process dead state (avoids infinite self-loops)
+                    // Process dead state to generate self-loops (Strict DFA)
+                    unprocessedStates.push(nextSet);
                 } else {
                     statesMap.set(nextKey, nextDfaState);
                     dfa.addState(nextDfaState);
