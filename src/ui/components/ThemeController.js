@@ -9,8 +9,8 @@ export class ThemeController {
         this.themeIcon = this.themeToggle?.querySelector('.theme-icon');
         this.themeText = this.themeToggle?.querySelector('.theme-text');
 
-        // Load saved theme or default to light
-        this.currentTheme = localStorage.getItem('theme') || 'light';
+        // Load saved theme or default to dark
+        this.currentTheme = localStorage.getItem('theme') || 'dark';
         this.applyTheme(this.currentTheme);
 
         // Bind toggle event
@@ -20,7 +20,7 @@ export class ThemeController {
     }
 
     toggle() {
-        this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+        this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
         this.applyTheme(this.currentTheme);
         localStorage.setItem('theme', this.currentTheme);
     }
@@ -28,13 +28,21 @@ export class ThemeController {
     applyTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
 
-        if (this.themeIcon && this.themeText) {
+        // Update button appearance
+        if (this.themeToggle) {
+            const icon = this.themeToggle.querySelector('.theme-icon');
+            const text = this.themeToggle.querySelector('.theme-text');
+
             if (theme === 'dark') {
-                this.themeIcon.textContent = '☀️';
-                this.themeText.textContent = 'Light';
+                // In dark mode, show Sun icon (to switch to light)
+                if (icon) icon.textContent = '☀';
+                if (text) text.textContent = 'LIGHT';
+                this.themeToggle.classList.remove('light-mode');
             } else {
-                this.themeIcon.textContent = '🌙';
-                this.themeText.textContent = 'Dark';
+                // In light mode, show Moon icon (to switch to dark)
+                if (icon) icon.textContent = '☾';
+                if (text) text.textContent = 'DARK';
+                this.themeToggle.classList.add('light-mode');
             }
         }
 
