@@ -44,18 +44,6 @@ Validated with complex regex patterns to ensure algorithmic correctness.
 | `a*` | **Kleene Star** | Self-looping accepting state. |
 | `(ab)+` | **Groups & Loops** | Handles repeating sequences. |
 
-## Usage
-
-This is a **client-side only** application (Vanilla JS + ES6 Modules).
-
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/yshasveep24-code/project.git
-    ```
-2.  **Run the application**:
-    - Simply open `index.html` in a modern browser (Chrome/Edge recommended).
-    - *Note*: For best experience with ES6 modules, use a local server (e.g., Live Server extension in VS Code).
-
 ## Project Structure
 
 - `src/app`: Core application bootstrap and state.
