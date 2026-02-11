@@ -1,10 +1,10 @@
-# Automata Visualizer ⚡
+# Automata Visualizer
 
 A sophisticated, interactive web application that visualizes the conversion of Regular Expressions to Deterministic Finite Automata (DFA). Designed with a distinctive **Technical Laboratory Aesthetic**.
 
 ![Status](https://img.shields.io/badge/Status-Stable-success) ![License](https://img.shields.io/badge/License-ISC-blue)
 
-## 🎨 Technical Laboratory Aesthetic
+## Technical Laboratory Aesthetic
 
 The user interface has been crafted to resemble high-end laboratory equipment, featuring:
 - **Oscilloscope-style Grids**: Deep navy background with subtle teal grid overlays.
@@ -14,7 +14,7 @@ The user interface has been crafted to resemble high-end laboratory equipment, f
   - Secondary: **Teal (#00E5CC)** for data flow and borders.
 - **Precision Typography**: Uses *Syne*, *Azeret Mono*, and *Share Tech Mono* for a technical look.
 
-## 🚀 Features
+## Features
 
 - **Pipeline Visualization**: Watch the transformation step-by-step:
   1.  **Regex Parsing**: Tokenization and Postfix conversion.
@@ -30,7 +30,7 @@ The user interface has been crafted to resemble high-end laboratory equipment, f
   - **Batch Testing**: Run multiple test cases at once.
 - **Export Capabilities**: Save your diagrams as SVG, PNG, or JSON.
 
-## 🧪 Verification & Testing
+## Verification & Testing
 
 Validated with complex regex patterns to ensure algorithmic correctness.
 
@@ -44,19 +44,19 @@ Validated with complex regex patterns to ensure algorithmic correctness.
 | `a*` | **Kleene Star** | Self-looping accepting state. |
 | `(ab)+` | **Groups & Loops** | Handles repeating sequences. |
 
-## 🛠️ Usage
+## Usage
 
 This is a **client-side only** application (Vanilla JS + ES6 Modules).
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/yourusername/automata-visualizer.git
+    git clone https://github.com/yshasveep24-code/project.git
     ```
 2.  **Run the application**:
     - Simply open `index.html` in a modern browser (Chrome/Edge recommended).
     - *Note*: For best experience with ES6 modules, use a local server (e.g., Live Server extension in VS Code).
 
-## 📂 Project Structure
+## Project Structure
 
 - `src/app`: Core application bootstrap and state.
 - `src/automata`: Algorithms (NFA, DFA, Epsilon Closure).
@@ -64,6 +64,7 @@ This is a **client-side only** application (Vanilla JS + ES6 Modules).
 - `src/visualization`: D3.js rendering logic.
 - `src/ui`: Component-based UI logic.
 
-## 📝 License
+## License
 
 ISC License. Free for educational and personal use.
+

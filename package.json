@@ -7,6 +7,16 @@
   "scripts": {
     "test": "node src/tests/test_manual.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yshasveep24-code/project.git"
+  },
+  "keywords": [
+    "automata",
+    "regex",
+    "dfa",
+    "visualization"
+  ],
+  "author": "yshasveep24-code",
   "license": "ISC"
 }
