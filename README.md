@@ -52,7 +52,5 @@ Validated with complex regex patterns to ensure algorithmic correctness.
 - `src/visualization`: D3.js rendering logic.
 - `src/ui`: Component-based UI logic.
 
-## License
 
-ISC License. Free for educational and personal use.
 
