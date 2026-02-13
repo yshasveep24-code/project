@@ -549,6 +549,7 @@ If you find this project useful, please consider giving it a star! ⭐
 
 [Report Bug](https://github.com/yshasveep24-code/project/issues) · 
 [Request Feature](https://github.com/yshasveep24-code/project/issues) · 
-[View Demo](https://yshasveep24-code.github.io/project)
+[Live Application](https://project-gamma-rose-95.vercel.app/) ·
+[Watch Demo](https://youtu.be/sM47jb99D8Q)
 
 </div>
