@@ -1779,9 +1779,12 @@ footer {
     font-family: var(--font-mono);
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: white;
+    color: var(--text);
+    background: var(--bg-secondary);
     border: 2px solid;
+    border-left-width: 5px;
     animation: toast-slide 0.3s ease-out;
+    box-shadow: var(--glow-md) rgba(0, 0, 0, 0.5);
 }
 
 @keyframes toast-slide {
@@ -1797,26 +1800,26 @@ footer {
 }
 
 .toast-error {
-    background: rgba(255, 51, 102, 0.9);
     border-color: var(--error);
+    color: var(--error);
     box-shadow: var(--glow-md) var(--error-glow);
 }
 
 .toast-warning {
-    background: rgba(255, 170, 0, 0.9);
     border-color: var(--warning);
+    color: var(--warning);
     box-shadow: var(--glow-md) var(--warning-glow);
 }
 
 .toast-success {
-    background: rgba(0, 255, 136, 0.9);
     border-color: var(--success);
+    color: var(--success);
     box-shadow: var(--glow-md) var(--success-glow);
 }
 
 .toast-info {
-    background: rgba(0, 229, 204, 0.9);
     border-color: var(--secondary);
+    color: var(--secondary);
     box-shadow: var(--glow-md) var(--secondary-glow);
 }
 
