@@ -239,11 +239,16 @@ header {
     top: 0;
     z-index: 100;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    overflow: hidden;
 }
 
 .header-content {
-    flex: 1;
+    flex: 1 1 0;
     text-align: center;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .logo-mark {
@@ -275,6 +280,9 @@ header h1 {
     letter-spacing: 0.1em;
     color: var(--text);
     text-shadow: var(--glow-sm) var(--primary-glow);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .subtitle {
@@ -284,6 +292,9 @@ header h1 {
     font-family: var(--font-mono);
     letter-spacing: 0.15em;
     font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .header-left,
@@ -2071,9 +2082,30 @@ footer {
 
 @media (max-width: 640px) {
 
+    header {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0.75rem 1rem;
+    }
+
     .header-left,
     .header-right {
         min-width: auto;
+    }
+
+    .header-content {
+        order: -1;
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    header h1 {
+        font-size: 1rem;
+    }
+
+    .subtitle {
+        font-size: 0.5625rem;
+        letter-spacing: 0.05em;
     }
 
     .theme-text {
