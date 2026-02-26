@@ -144,11 +144,13 @@
                         </div>
                         <div class="left-controls">
                             <div class="control-group export-group">
-                                <select id="export-target-selector" class="export-selector">
-                                    <option value="enfa">ε-NFA</option>
-                                    <option value="dfa">DFA</option>
-                                    <option value="minDfa" selected>MIN. DFA</option>
-                                </select>
+                                <div class="select-wrapper">
+                                    <select id="export-target-selector" class="export-selector">
+                                        <option value="enfa">ε-NFA</option>
+                                        <option value="dfa">DFA</option>
+                                        <option value="minDfa" selected>MIN. DFA</option>
+                                    </select>
+                                </div>
                                 <div class="button-group" style="display:flex; gap:0.5rem;">
                                     <button id="export-svg-btn" class="btn-secondary" title="Export as SVG"
                                         style="flex:1;">
