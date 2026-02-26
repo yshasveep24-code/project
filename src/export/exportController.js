@@ -19,7 +19,11 @@ export class ExportPanel {
     }
 
     getSVG() {
-        let svg = document.querySelector('#canvas-dfa svg');
+        const selector = document.getElementById('export-target-selector');
+        const targetId = selector ? selector.value : 'dfa';
+        let svg = document.querySelector(`#canvas-${targetId} svg`);
+
+        // Fallback if the specific stage hasn't rendered
         if (!svg) svg = document.querySelector('.graph-canvas svg');
 
         if (!svg) {
@@ -39,12 +43,15 @@ export class ExportPanel {
         const data = this.getSVG();
         if (!data) return;
 
+        const selector = document.getElementById('export-target-selector');
+        const targetId = selector ? selector.value : 'dfa';
+
         const blob = new Blob([data.content], { type: 'image/svg+xml;charset=utf-8' });
         if (typeof saveAs !== 'undefined') {
-            saveAs(blob, `automata_dfa.svg`);
+            saveAs(blob, `automata_${targetId}.svg`);
         } else {
             // Fallback download
-            this.fallbackDownload(blob, 'automata_dfa.svg');
+            this.fallbackDownload(blob, `automata_${targetId}.svg`);
         }
     }
 
@@ -52,7 +59,10 @@ export class ExportPanel {
         const data = this.getSVG();
         if (!data) return;
 
-        downloadPNG(data.content, data.width, data.height, `automata_dfa.png`);
+        const selector = document.getElementById('export-target-selector');
+        const targetId = selector ? selector.value : 'dfa';
+
+        downloadPNG(data.content, data.width, data.height, `automata_${targetId}.png`);
     }
 
     exportJSON() {

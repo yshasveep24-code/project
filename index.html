@@ -49,7 +49,7 @@
             <div class="header-content">
                 <div class="logo-mark">◉━━◉</div>
                 <h1>AUTOMATA VISUALIZER</h1>
-                <p class="subtitle">REGEX → ε-NFA → NFA → DFA</p>
+                <p class="subtitle">REGEX → ε-NFA → NFA → DFA → MIN. DFA</p>
             </div>
             <div class="header-right">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
@@ -144,6 +144,11 @@
                         </div>
                         <div class="left-controls">
                             <div class="control-group export-group">
+                                <select id="export-target-selector" class="export-selector">
+                                    <option value="enfa">ε-NFA</option>
+                                    <option value="dfa">DFA</option>
+                                    <option value="minDfa" selected>MIN. DFA</option>
+                                </select>
                                 <div class="button-group" style="display:flex; gap:0.5rem;">
                                     <button id="export-svg-btn" class="btn-secondary" title="Export as SVG"
                                         style="flex:1;">
@@ -171,7 +176,7 @@
                         </button>
                         <button id="open-states-popup" class="info-popup-btn">
                             <span class="btn-bracket">[</span>
-                            <span>STATE INFO</span>
+                            <span id="state-info-title-label">STATE INFO</span>
                             <span class="btn-bracket">]</span>
                         </button>
                         <button id="open-log-popup" class="info-popup-btn">
@@ -185,7 +190,7 @@
                     <div class="info-section stats-section">
                         <div class="section-title-bar">
                             <span class="section-marker">▸</span>
-                            <span>STATISTICS</span>
+                            <span id="stats-title-label">STATISTICS</span>
                         </div>
                         <div id="statistics-container" class="stats-grid">
                             <div class="stat-item">
@@ -197,11 +202,12 @@
                                 <span class="stat-value" id="stat-transitions">—</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-label">ALPHA</span>
+                                <span class="stat-label"
+                                    data-tooltip="Alphabet: Set of valid input symbols (excluding ε)">ALPHA</span>
                                 <span class="stat-value" id="stat-alphabet">—</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-label">FINAL</span>
+                                <span class="stat-label" data-tooltip="Final/Accept states">FINAL</span>
                                 <span class="stat-value" id="stat-final">—</span>
                             </div>
                         </div>
@@ -258,6 +264,25 @@
                             <span class="popup-marker">◆</span>
                             TRANSITION TABLE
                         </h2>
+                        <select id="table-automaton-selector" style="
+                            background: var(--surface, #1a1a2e);
+                            color: var(--text-primary, #fff);
+                            border: 2px solid var(--border, #333);
+                            padding: 6px 12px;
+                            font-family: 'Azeret Mono', monospace;
+                            font-size: 0.75rem;
+                            font-weight: 700;
+                            letter-spacing: 0.05em;
+                            text-transform: uppercase;
+                            cursor: pointer;
+                            margin-left: auto;
+                            margin-right: 12px;
+                        ">
+                            <option value="enfa">ε-NFA</option>
+                            <option value="nfa">NFA</option>
+                            <option value="dfa">DFA</option>
+                            <option value="minDfa" selected>MIN. DFA</option>
+                        </select>
                         <button class="info-popup-close" data-close="transition-popup">
                             <span>×</span>
                         </button>

@@ -3,7 +3,8 @@
 A distinctive web-based tool for visualizing the conversion of regular expressions to finite automata through multiple stages: ε-NFA → NFA → DFA. Built with a unique **Technical Laboratory** aesthetic inspired by oscilloscopes and vintage computing equipment.
 
 ![License](https://img.shields.io/badge/license-MIT-orange.svg)
-![Version](https://img.shields.io/badge/version-1.0.0-teal.svg)
+![Version](https://img.shields.io/badge/version-1.0.1-teal.svg)
+![Last Modified](https://img.shields.io/badge/last%20modified-2026--02--27-yellow.svg)
 
 ---
 
@@ -436,7 +437,7 @@ Contributions are welcome! Please follow these steps:
 
 - [ ] Additional regex operators support
 - [ ] Regex to NFA optimization algorithms
-- [ ] DFA minimization visualization
+- [x] DFA minimization visualization
 - [ ] Export to additional formats (PDF, LaTeX)
 - [ ] Interactive tutorials/walkthroughs
 - [ ] Internationalization (i18n)
@@ -518,9 +519,9 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ## 🗺️ Roadmap
 
-### v1.1.0 (Planned)
-- [ ] DFA minimization algorithm
-- [ ] Regular expression to minimal DFA direct conversion
+### v1.1.0 (Released)
+- [x] DFA minimization algorithm
+- [x] Regular expression to minimal DFA direct conversion
 - [ ] Graph layout algorithms (force-directed, hierarchical)
 
 ### v1.2.0 (Future)

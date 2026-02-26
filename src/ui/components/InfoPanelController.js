@@ -9,6 +9,7 @@ export class InfoPanelController {
     constructor() {
         this.currentAutomaton = null;
         this.currentStage = 'dfa';
+        this.allAutomata = {}; // Store reference to all automata
         this.init();
     }
 
@@ -38,6 +39,21 @@ export class InfoPanelController {
                 if (e.target === overlay) overlay.style.display = 'none';
             });
         });
+
+        // Automaton selector for transition table
+        const selector = document.getElementById('table-automaton-selector');
+        if (selector) {
+            selector.addEventListener('change', (e) => {
+                const chosen = e.target.value; // 'enfa', 'nfa', 'dfa'
+                const automaton = this.allAutomata[chosen];
+                if (automaton) {
+                    this.updateTransitionTable(automaton, chosen);
+                } else {
+                    const container = document.getElementById('transition-table-container');
+                    if (container) container.innerHTML = '<div class="empty-state"><div class="empty-icon">∅</div><p>NO DATA FOR THIS STAGE</p></div>';
+                }
+            });
+        }
     }
 
     bindPopup(btnId, popupId) {
@@ -53,10 +69,32 @@ export class InfoPanelController {
     updateInfoPanel(state) {
         const { automata } = state;
 
-        // Use DFA by default, fall back to NFA, then ε-NFA
-        let automaton = automata.dfa || automata.nfa || automata.enfa;
+        // Store all automata for the selector
+        this.allAutomata = automata;
+
+        // Use minDfa by default, fall back to DFA, then NFA, then ε-NFA
+        let automaton = automata.minDfa || automata.dfa || automata.nfa || automata.enfa;
+        let stage = automata.minDfa ? 'minDfa' : (automata.dfa ? 'dfa' : (automata.nfa ? 'nfa' : 'enfa'));
 
         this.currentAutomaton = automaton;
+
+        // Sync the selector with default choice
+        const selector = document.getElementById('table-automaton-selector');
+        if (selector) selector.value = stage;
+
+        const stageNames = {
+            'enfa': 'ε-NFA',
+            'nfa': 'NFA',
+            'dfa': 'DFA',
+            'minDfa': 'MIN. DFA'
+        };
+        const stageName = stageNames[stage] || stage;
+
+        const statsLabel = document.getElementById('stats-title-label');
+        if (statsLabel) statsLabel.textContent = `STATISTICS (${stageName})`;
+
+        const infoLabel = document.getElementById('state-info-title-label');
+        if (infoLabel) infoLabel.textContent = `STATE INFO (${stageName})`;
 
         if (!automaton) {
             this.showEmptyState();
@@ -64,7 +102,7 @@ export class InfoPanelController {
         }
 
         try {
-            this.updateTransitionTable(automaton);
+            this.updateTransitionTable(automaton, stage);
             this.updateStateInformation(automaton);
             this.updateStatistics(automaton);
             this.updateConversionLog(state);
@@ -91,12 +129,15 @@ export class InfoPanelController {
         return [];
     }
 
-    updateTransitionTable(automaton) {
+    updateTransitionTable(automaton, stage = 'dfa') {
         const container = document.getElementById('transition-table-container');
         if (!container) return;
 
         const states = this.getStatesArray(automaton);
         const alphabet = this.getAlphabetArray(automaton);
+
+        // For ε-NFA, also include epsilon in the displayed alphabet
+        const displayAlphabet = (stage === 'enfa') ? [...alphabet, 'ε'] : [...alphabet];
 
         if (states.length === 0) {
             container.innerHTML = '<div class="empty-state"><p>No states to display</p></div>';
@@ -121,10 +162,11 @@ export class InfoPanelController {
                     <div class="transition-card-body">`;
 
             // Show transitions for each symbol
-            alphabet.forEach(symbol => {
+            displayAlphabet.forEach(symbol => {
                 const displaySymbol = (symbol === '' || symbol === 'ε') ? 'ε' : symbol;
+                const matchSymbol = (symbol === 'ε') ? 'ε' : symbol;
                 const targets = state.transitions
-                    .filter(t => t.symbol === symbol)
+                    .filter(t => t.symbol === matchSymbol)
                     .map(t => t.to.label || `q${t.to.id}`);
 
                 if (targets.length > 0) {

@@ -24,6 +24,8 @@ export class EdgeRenderer {
         let isCurved = false;
         let isSelfLoop = false;
 
+        const isBackEdge = fromPos.x - toPos.x > 10 && Math.abs(fromPos.y - toPos.y) < 50;
+
         if (transition.from.id === transition.to.id) {
             // Self loop - uses large elliptical arc
             isSelfLoop = true;
@@ -47,8 +49,8 @@ export class EdgeRenderer {
             }
             // Start/end not needed for arc approach
             startX = x; startY = y; endX = x; endY = y;
-        } else if (isBidirectional || offsetIndex !== 0) {
-            // Curved line for bidirectional edges
+        } else if (isBidirectional || isBackEdge || offsetIndex !== 0) {
+            // Curved line for bidirectional edges or back-edges
             isCurved = true;
             angle = Math.atan2(dy, dx);
             const r = 22;
@@ -64,8 +66,16 @@ export class EdgeRenderer {
             const ny = dx;
             const len = Math.sqrt(nx * nx + ny * ny);
 
-            const curveDirection = isBidirectional ? 1 : (offsetIndex % 2 === 0 ? 1 : -1);
-            const offset = (isBidirectional ? 50 : 45 * offsetIndex) * curveDirection; // Larger curve for cleaner look
+            let offset;
+            if (isBackEdge && !isBidirectional && offsetIndex === 0) {
+                // Arch back-edges over the nodes dynamically based on distance
+                offset = Math.min(180, Math.max(60, Math.abs(dx) * 0.35));
+                // Curve upwards (ny is negative since dx is negative)
+                if (ny > 0) offset = -offset; // Ensure consistent arch direction
+            } else {
+                const curveDirection = isBidirectional ? 1 : (offsetIndex % 2 === 0 ? 1 : -1);
+                offset = (isBidirectional ? 50 : 45 * offsetIndex) * curveDirection; // Larger curve for cleaner look
+            }
 
             controlX = midX0 + (nx / len) * offset;
             controlY = midY0 + (ny / len) * offset;
@@ -304,7 +314,7 @@ export class EdgeRenderer {
     }
 
     createCurvedPath(startX, startY, endX, endY, controlX, controlY, angle, theme) {
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
         const size = this.arrowSize;
 
         const lineEndX = endX - Math.cos(angle) * size;
@@ -316,14 +326,21 @@ export class EdgeRenderer {
         const baseX2 = lineEndX + Math.cos(baseAngle2) * (size / 2.5);
         const baseY2 = lineEndY + Math.sin(baseAngle2) * (size / 2.5);
 
-        let d = `M ${startX} ${startY} Q ${controlX} ${controlY} ${lineEndX} ${lineEndY}`;
-        d += ` L ${baseX1} ${baseY1} L ${endX} ${endY} L ${baseX2} ${baseY2} L ${lineEndX} ${lineEndY}`;
+        // Curved line (stroke only, no fill)
+        const curvePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        curvePath.setAttribute("d", `M ${startX} ${startY} Q ${controlX} ${controlY} ${lineEndX} ${lineEndY}`);
+        curvePath.style.stroke = theme.edgeColor;
+        curvePath.style.strokeWidth = "2px";
+        curvePath.style.fill = "none";
+        g.appendChild(curvePath);
 
-        path.setAttribute("d", d);
-        path.style.stroke = theme.edgeColor;
-        path.style.strokeWidth = "2px";
-        path.style.fill = theme.edgeColor;
-        path.style.strokeLinejoin = "round";
-        return path;
+        // Arrowhead (filled triangle, no stroke)
+        const arrowPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        arrowPath.setAttribute("d", `M ${endX} ${endY} L ${baseX1} ${baseY1} L ${baseX2} ${baseY2} Z`);
+        arrowPath.style.fill = theme.edgeColor;
+        arrowPath.style.stroke = "none";
+        g.appendChild(arrowPath);
+
+        return g;
     }
 }

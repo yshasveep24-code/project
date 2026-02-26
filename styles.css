@@ -457,7 +457,6 @@ main {
 .info-section {
     background: var(--bg-secondary);
     border: 2px solid var(--border);
-    overflow: hidden;
     transition: all 0.2s;
 }
 
@@ -527,6 +526,61 @@ main {
     box-shadow: var(--glow-sm) var(--secondary-glow);
 }
 
+/* Tooltips */
+[data-tooltip] {
+    position: relative;
+    cursor: help;
+    display: inline-block;
+}
+
+[data-tooltip]:hover::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    padding: 0.6rem 1rem;
+    background: #000;
+    /* High contrast black background */
+    border: 1px solid var(--primary);
+    /* Colored border for visibility */
+    color: #fff;
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+    animation: tooltip-fade 0.2s forwards 0.1s;
+    text-transform: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), var(--glow-sm) var(--primary-glow);
+    border-radius: 4px;
+}
+
+[data-tooltip]:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--border-strong) transparent transparent transparent;
+    z-index: 1001;
+    pointer-events: none;
+    opacity: 0;
+    animation: tooltip-fade 0.2s forwards 0.1s;
+}
+
+@keyframes tooltip-fade {
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-4px);
+        /* Moves up slightly for effect */
+    }
+}
+
 /* Input Wrapper */
 .input-wrapper {
     position: relative;
@@ -585,6 +639,40 @@ main {
     color: white;
     border-color: var(--error);
     box-shadow: var(--glow-sm) var(--error-glow);
+}
+
+.export-selector {
+    background: var(--bg-secondary);
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    outline: none;
+    transition: all 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+}
+
+.export-selector:hover,
+.export-selector:focus {
+    border-color: var(--secondary);
+    box-shadow: var(--glow-sm) var(--secondary-glow);
+}
+
+.export-selector option {
+    background: var(--bg-secondary);
+    color: var(--text);
+    font-weight: 700;
 }
 
 /* Buttons */

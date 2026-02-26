@@ -9,7 +9,10 @@ import { validate } from '../../parser/regexValidator.js';
 import { toPostfix } from '../../parser/regexToPostfix.js';
 import { evaluate } from '../../parser/postfixEvaluator.js';
 import { removeEpsilons } from '../../automata/nfa/epsilonRemoval.js';
+import { optimizeNFA } from '../../automata/nfa/nfaOptimizer.js';
+import { optimizeENFA } from '../../automata/epsilonNFA/eNfaOptimizer.js';
 import { toDFA } from '../../automata/dfa/subsetConstruction.js';
+import { minimizeDFA } from '../../automata/dfa/dfaMinimizer.js';
 import { renameStates } from '../../automata/dfa/dfaStateNaming.js';
 
 export class RegexInput {
@@ -58,26 +61,33 @@ export class RegexInput {
 
             // 2. Build Automata
             // ε-NFA
-            const enfa = evaluate(postfix);
+            const rawEnfa = evaluate(postfix);
+            const enfa = optimizeENFA(rawEnfa); // Remove redundant epsilon chains & dead states
 
-            // NFA
-            const nfa = removeEpsilons(enfa);
+            // NFA (epsilon removal + optimization)
+            const rawNfa = removeEpsilons(enfa);
+            const nfa = optimizeNFA(rawNfa); // Remove unreachable, dead, and merge equivalent states
 
-            // DFA
-            const dfa = toDFA(nfa);
-            renameStates(dfa);
+            // DFA (subset construction)
+            const rawDfa = toDFA(nfa);
+            renameStates(rawDfa); // Rename raw DFA first for logging/verification
+
+            // Minimized DFA (Hopcroft's Algorithm)
+            const minDfa = minimizeDFA(rawDfa);
+            renameStates(minDfa); // Rename the minimized DFA states
 
             // Update State
             appState.setState({
                 regex: regex,
-                currentStage: 'enfa', // Auto-switch to first stage
+                currentStage: 'minDfa', // Auto-switch to final stage
                 automata: {
                     enfa: enfa,
                     nfa: nfa,
-                    dfa: dfa
+                    dfa: rawDfa,
+                    minDfa: minDfa
                 }
             });
-            console.log('Automata generated and stage switched to enfa.');
+            console.log('Automata generated and stage switched to minDfa.');
 
         } catch (e) {
             console.error('Regex error:', e);

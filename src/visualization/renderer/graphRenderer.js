@@ -96,8 +96,47 @@ export class GraphRenderer {
         const edgeMap = new Map();
         const bidirectionalPairs = new Set();
 
+        // Calculate occupied directions for self loops to avoid overlaps
+        const occupiedDirections = new Map();
         for (const state of automaton.states) {
+            occupiedDirections.set(state.id, new Set());
+        }
+
+        if (automaton.startState && occupiedDirections.has(automaton.startState.id)) {
+            occupiedDirections.get(automaton.startState.id).add('left'); // Start arrow comes from left
+        }
+
+        for (const state of automaton.states) {
+            const fromPos = positions.get(state.id);
+            if (!fromPos) continue;
+
             for (const t of state.transitions) {
+                if (t.to.id !== state.id) { // Not a self loop
+                    const toPos = positions.get(t.to.id);
+                    if (toPos) {
+                        const dx = toPos.x - fromPos.x;
+                        const dy = toPos.y - fromPos.y;
+
+                        if (Math.abs(dx) > Math.abs(dy)) {
+                            if (dx > 0) {
+                                occupiedDirections.get(state.id).add('right');
+                                occupiedDirections.get(t.to.id).add('left');
+                            } else {
+                                occupiedDirections.get(state.id).add('left');
+                                occupiedDirections.get(t.to.id).add('right');
+                            }
+                        } else {
+                            if (dy > 0) {
+                                occupiedDirections.get(state.id).add('bottom');
+                                occupiedDirections.get(t.to.id).add('top');
+                            } else {
+                                occupiedDirections.get(state.id).add('top');
+                                occupiedDirections.get(t.to.id).add('bottom');
+                            }
+                        }
+                    }
+                }
+
                 const key = `${t.from.id}-${t.to.id}`;
                 const reverseKey = `${t.to.id}-${t.from.id}`;
 
@@ -130,23 +169,24 @@ export class GraphRenderer {
                     symbol: combinedSymbol
                 };
 
-                // Determine self-loop direction based on node position
-                let selfLoopDir = 'right'; // default
+                // Determine self-loop direction based on occupied sides (restrict to top/bottom)
+                let selfLoopDir = 'top'; // default preference
                 if (transitions[0].from.id === transitions[0].to.id) {
-                    // Check position relative to bounds
-                    const isLeftmost = fromPos.x <= minX + 10;
-                    const isRightmost = fromPos.x >= maxX - 10;
-                    const isTopmost = fromPos.y <= minY + 10;
-                    const isBottommost = fromPos.y >= maxY - 10;
+                    const stateId = transitions[0].from.id;
+                    const occupied = occupiedDirections.get(stateId);
 
-                    if (isLeftmost) selfLoopDir = 'left';
-                    else if (isRightmost) selfLoopDir = 'right';
-                    else if (isTopmost) selfLoopDir = 'top';
-                    else if (isBottommost) selfLoopDir = 'bottom';
-                    else {
-                        // Random direction for middle nodes
-                        const directions = ['top', 'bottom', 'left', 'right'];
-                        selfLoopDir = directions[Math.floor(Math.random() * directions.length)];
+                    const canTop = !occupied.has('top');
+                    const canBottom = !occupied.has('bottom');
+
+                    if (canTop && canBottom) {
+                        selfLoopDir = Math.random() < 0.5 ? 'top' : 'bottom';
+                    } else if (canTop) {
+                        selfLoopDir = 'top';
+                    } else if (canBottom) {
+                        selfLoopDir = 'bottom';
+                    } else {
+                        // Even if both are occupied, force to be either top or bottom
+                        selfLoopDir = Math.random() < 0.5 ? 'top' : 'bottom';
                     }
                 }
 
