@@ -45,7 +45,7 @@ export class RegexInput {
                 const toast = document.createElement('div');
                 toast.className = 'toast toast-warning';
                 // User requested specific message
-                toast.innerHTML = '⚠️ <strong>Complextity Alert:</strong><br>The diagram may not be clearly visible due to complexity.<br>Try visualizing multiple times to get a better layout.';
+                toast.innerHTML = '⚠️ <strong>Complexity Alert:</strong><br>The diagram may not be clearly visible due to complexity.<br>Try visualizing multiple times to get a better layout.';
 
                 // Make it stay longer due to length
                 toastContainer.appendChild(toast);

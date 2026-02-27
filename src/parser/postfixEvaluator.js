@@ -36,6 +36,10 @@ export function evaluate(postfixTokens) {
             if (stack.length < 1) throw new Error('Invalid regex: missing operand for PLUS (+)');
             const fragment = stack.pop();
             stack.push(Thompson.createPlus(fragment));
+        } else if (token.type === TokenType.QUESTION) {
+            if (stack.length < 1) throw new Error('Invalid regex: missing operand for QUESTION (?)');
+            const fragment = stack.pop();
+            stack.push(Thompson.createOptional(fragment));
         }
     }
 

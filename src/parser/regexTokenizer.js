@@ -8,6 +8,7 @@ export const TokenType = {
     LITERAL: 'LITERAL',
     STAR: 'STAR',         // *
     PLUS: 'PLUS',         // +
+    QUESTION: 'QUESTION', // ?
     OR: 'OR',             // |
     LPAREN: 'LPAREN',     // (
     RPAREN: 'RPAREN',     // )
@@ -44,6 +45,9 @@ export function tokenize(regex) {
                     break;
                 case '+':
                     tokens.push({ type: TokenType.PLUS, value: '+' });
+                    break;
+                case '?':
+                    tokens.push({ type: TokenType.QUESTION, value: '?' });
                     break;
                 case '|':
                     tokens.push({ type: TokenType.OR, value: '|' });

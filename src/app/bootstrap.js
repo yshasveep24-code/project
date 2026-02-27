@@ -81,6 +81,21 @@ export function bootstrap() {
                 title.innerHTML = s.label.replace(/ε/g, '<span style="text-transform: none; display: inline-block; font-family: \'Times New Roman\', serif; font-style: italic; font-weight: normal;">ε</span>');
                 wrapper.appendChild(title);
 
+                // Add an alert for NFA and ε-NFA
+                if (s.id === 'enfa' || s.id === 'nfa') {
+                    const alertDiv = document.createElement('div');
+                    alertDiv.style.backgroundColor = 'rgba(255, 152, 0, 0.1)';
+                    alertDiv.style.border = '1px dashed var(--warning, #ff9800)';
+                    alertDiv.style.color = 'var(--warning, #ff9800)'; // Will fallback to #ff9800
+                    alertDiv.style.padding = '8px 12px';
+                    alertDiv.style.margin = '10px 0';
+                    alertDiv.style.fontSize = '0.8rem';
+                    alertDiv.style.fontFamily = "'Share Tech Mono', monospace";
+                    alertDiv.style.textAlign = 'left';
+                    alertDiv.innerHTML = '⚠️ <strong>NOTE:</strong> The ε-NFA and NFA cannot be minimized because NFA minimization is an NP-hard problem. Focus on minimizing the DFA instead.';
+                    wrapper.appendChild(alertDiv);
+                }
+
                 const canvas = document.createElement('div');
                 canvas.className = 'graph-canvas';
                 canvas.id = `canvas-${s.id}`;

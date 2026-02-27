@@ -14,7 +14,7 @@ const CONCAT = 'CONCAT'; // explicit concatenation operator type
 // | : lowest, left
 
 function getPrecedence(opType) {
-    if (opType === TokenType.STAR || opType === TokenType.PLUS) return 3;
+    if (opType === TokenType.STAR || opType === TokenType.PLUS || opType === TokenType.QUESTION) return 3;
     if (opType === CONCAT) return 2;
     if (opType === TokenType.OR) return 1;
     return 0;
@@ -89,7 +89,7 @@ function insertExplicitConcat(tokens) {
         if (i + 1 < tokens.length) {
             const t2 = tokens[i + 1];
 
-            const t1IsOperand = (t1.type === TokenType.LITERAL || t1.type === TokenType.STAR || t1.type === TokenType.PLUS || t1.type === TokenType.RPAREN);
+            const t1IsOperand = (t1.type === TokenType.LITERAL || t1.type === TokenType.STAR || t1.type === TokenType.PLUS || t1.type === TokenType.QUESTION || t1.type === TokenType.RPAREN);
             const t2IsOperand = (t2.type === TokenType.LITERAL || t2.type === TokenType.LPAREN);
 
             if (t1IsOperand && t2IsOperand) {

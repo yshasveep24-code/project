@@ -21,7 +21,7 @@ export function validate(tokens) {
 
     // Check invalid start
     const firstType = tokens[0].type;
-    if (firstType === TokenType.STAR || firstType === TokenType.PLUS || firstType === TokenType.OR || firstType === TokenType.RPAREN) {
+    if (firstType === TokenType.STAR || firstType === TokenType.PLUS || firstType === TokenType.QUESTION || firstType === TokenType.OR || firstType === TokenType.RPAREN) {
         throw new Error(`Regex cannot start with '${tokens[0].value}'`);
     }
 
@@ -43,7 +43,7 @@ export function validate(tokens) {
 
         // Check invalid operator sequence after LPAREN
         if (token.type === TokenType.LPAREN && next) {
-            if (next.type === TokenType.STAR || next.type === TokenType.PLUS || next.type === TokenType.OR) {
+            if (next.type === TokenType.STAR || next.type === TokenType.PLUS || next.type === TokenType.QUESTION || next.type === TokenType.OR) {
                 throw new Error(`Invalid pattern: '(' cannot be followed by '${next.value}'`);
             }
         }
@@ -51,9 +51,16 @@ export function validate(tokens) {
         // Check invalid consecutive operators
         // e.g. ||, *+, (*, |)
         if (token.type === TokenType.OR) {
-            if (!next || next.type === TokenType.OR || next.type === TokenType.RPAREN || next.type === TokenType.STAR || next.type === TokenType.PLUS) {
+            if (!next || next.type === TokenType.OR || next.type === TokenType.RPAREN || next.type === TokenType.STAR || next.type === TokenType.PLUS || next.type === TokenType.QUESTION) {
                 // regex ending with | or followed by invalid
                 throw new Error('Invalid use of OR (|)');
+            }
+        }
+
+        // Check consecutive quantifiers (e.g. **, *+, ?*, etc)
+        if (token.type === TokenType.STAR || token.type === TokenType.PLUS || token.type === TokenType.QUESTION) {
+            if (next && (next.type === TokenType.STAR || next.type === TokenType.PLUS || next.type === TokenType.QUESTION)) {
+                throw new Error(`Invalid consecutive quantifiers: '${token.value}' followed by '${next.value}'`);
             }
         }
     }

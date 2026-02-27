@@ -80,3 +80,18 @@ export function createPlus(fragment) {
 
     return new Fragment(start, end);
 }
+
+export function createOptional(fragment) {
+    const start = new State();
+    const end = new State();
+
+    // 1. start -> fragment.start (take one occurrence)
+    // 2. start -> end (skip occurrence)
+    // 3. fragment.end -> end (exit)
+
+    start.addTransition(new Transition(start, fragment.start, EPSILON));
+    start.addTransition(new Transition(start, end, EPSILON));
+    fragment.end.addTransition(new Transition(fragment.end, end, EPSILON));
+
+    return new Fragment(start, end);
+}
