@@ -137,7 +137,7 @@ export class EdgeRenderer {
         // Protect epsilon from text-transform: uppercase
         if (transition.symbol.includes('ε')) {
             // Use innerHTML to wrap epsilon in tspan with proper styling
-            const protectedSymbol = transition.symbol.replace(/ε/g, '<tspan style="text-transform: none; font-family: \'Times New Roman\', serif; font-style: italic;">ε</tspan>');
+            const protectedSymbol = transition.symbol.replace(/ε/g, '<tspan style="font-family: \'Times New Roman\', serif; font-style: italic;">ε</tspan>');
             text.innerHTML = protectedSymbol;
         } else {
             text.textContent = transition.symbol;
@@ -147,6 +147,7 @@ export class EdgeRenderer {
         text.style.fontSize = "12px";
         text.style.fontFamily = "Inter, sans-serif";
         text.style.fontWeight = "bold";
+        text.style.textTransform = "none";
 
         g.appendChild(bgRect);
         g.appendChild(text);

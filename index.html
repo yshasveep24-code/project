@@ -282,7 +282,6 @@
                         ">
                             <option value="enfa">ε-NFA</option>
                             <option value="nfa">NFA</option>
-                            <option value="dfa">DFA</option>
                             <option value="minDfa" selected>MIN. DFA</option>
                         </select>
                         <button class="info-popup-close" data-close="transition-popup">
@@ -474,6 +473,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="examples-grid">
+                        <div class="example-card" data-regex="AaBb">
+                            <h4>Mixed Case</h4>
+                            <code>AaBb</code>
+                            <p>Matches exactly "AaBb" — uppercase and lowercase are distinct</p>
+                            <button class="btn-secondary try-example-btn">TRY THIS</button>
+                        </div>
                         <div class="example-card" data-regex="(a|b)abb">
                             <h4>String Ending in "abb"</h4>
                             <code>(a|b)abb</code>

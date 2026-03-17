@@ -60,6 +60,7 @@ export class NodeRenderer {
         text.style.fill = (state.isAccepting || state.isStart || isDead) ? '#ffffff' : theme.textColor;
         text.style.fontWeight = (state.isAccepting || state.isStart) ? 'bold' : 'normal';
         text.style.userSelect = "none";
+        text.style.textTransform = "none";
 
         g.appendChild(text);
 
