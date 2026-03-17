@@ -38,13 +38,16 @@ export function toDFA(nfa) {
     statesMap.set(startKey, dfaStart);
     unprocessedStates.push(startSet);
 
+    // We use a lazy dead-state: only create Φ if something actually needs it.
+    let deadState = null;
+    const emptyKey = getStateSetKey(new Set());
+
     while (unprocessedStates.length > 0) {
         const currentSet = unprocessedStates.shift();
         const currentKey = getStateSetKey(currentSet);
         const dfaState = statesMap.get(currentKey);
 
-        // Mark accepting if any in set is accepting
-        // (This should be done when creating the state, but we can do it here)
+        // Mark accepting if any state in the set is accepting
         for (const s of currentSet) {
             if (s.isAccepting) {
                 dfaState.isAccepting = true;
@@ -55,39 +58,35 @@ export function toDFA(nfa) {
 
         // For each symbol
         for (const symbol of dfa.alphabet) {
-            // Move(currentSet, symbol)
             const nextSet = move(currentSet, symbol);
 
-            // if (nextSet.size === 0) continue; // Dead state logic: Allow it!
-            // We want to show the dead state explicitly.
+            if (nextSet.size === 0) {
+                // Lazy-create the dead state only on first need
+                if (!deadState) {
+                    deadState = new State(emptyKey);
+                    deadState.label = 'Φ';
+                    deadState.isDead = true;
+                    deadState.metadata.nfaStates = [];
+                    statesMap.set(emptyKey, deadState);
+                    dfa.addState(deadState);
+                    // Enqueue so its self-loops get added
+                    unprocessedStates.push(new Set());
+                }
+                dfa.addTransition(dfaState, deadState, symbol);
+            } else {
+                const nextKey = getStateSetKey(nextSet);
+                let nextDfaState = statesMap.get(nextKey);
 
-            // However, we need to handle the empty set correctly.
-            // getStateSetKey(new Set()) returns "" usually (or however it's implemented).
-            // Let's ensure it works.
-
-
-            const nextKey = getStateSetKey(nextSet);
-            let nextDfaState = statesMap.get(nextKey);
-
-            if (!nextDfaState) {
-                nextDfaState = new State(nextKey);
-                nextDfaState.metadata.nfaStates = Array.from(nextSet).map(s => s.id);
-
-                if (nextSet.size === 0) {
-                    nextDfaState.label = 'Φ';
-                    nextDfaState.isDead = true; // Mark given for styling
-                    statesMap.set(nextKey, nextDfaState);
-                    dfa.addState(nextDfaState);
-                    // Process dead state to generate self-loops (Strict DFA)
-                    unprocessedStates.push(nextSet);
-                } else {
+                if (!nextDfaState) {
+                    nextDfaState = new State(nextKey);
+                    nextDfaState.metadata.nfaStates = Array.from(nextSet).map(s => s.id);
                     statesMap.set(nextKey, nextDfaState);
                     dfa.addState(nextDfaState);
                     unprocessedStates.push(nextSet);
                 }
-            }
 
-            dfa.addTransition(dfaState, nextDfaState, symbol);
+                dfa.addTransition(dfaState, nextDfaState, symbol);
+            }
         }
     }
 

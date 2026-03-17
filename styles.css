@@ -609,7 +609,6 @@ main {
     font-weight: 500;
     color: var(--text);
     transition: all 0.2s;
-    text-transform: uppercase;
     letter-spacing: 0.025em;
 }
 
@@ -623,7 +622,6 @@ main {
 
 .input-wrapper input::placeholder {
     color: var(--text-muted);
-    text-transform: lowercase;
 }
 
 .clear-btn {

@@ -67,7 +67,6 @@ export function bootstrap() {
         const stages = [
             { id: 'enfa', label: 'ε-NFA (Thompson\'s Construction)', data: automata.enfa },
             { id: 'nfa', label: 'NFA (ε-Removal)', data: automata.nfa, hidden: !state.showNFA },
-            { id: 'dfa', label: 'DFA (Subset Construction)', data: automata.dfa },
             { id: 'minDfa', label: 'Minimized DFA (Hopcroft\'s Alg.)', data: automata.minDfa }
         ];
 
