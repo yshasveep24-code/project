@@ -10,7 +10,7 @@ export class ThemeController {
         this.themeText = this.themeToggle?.querySelector('.theme-text');
 
         // Load saved theme or default to dark
-        this.currentTheme = localStorage.getItem('theme') || 'dark';
+        this.currentTheme = localStorage.getItem('theme') || 'light';
         this.applyTheme(this.currentTheme);
 
         // Bind toggle event
